@@ -328,6 +328,9 @@ $("links").addEventListener("click", e => {
 (function () {
 /* ===== CẤU HÌNH ===== */
 const DATA_SOURCE = { dir: "data/", refreshMs: 60000, staleMin: 30 };   // mỗi thị trường: data/<id>.json
+/* Giá trực tiếp (chỉ Crypto) lấy thẳng từ Binance trong trình duyệt. refreshMs: 60000 = 1 phút, 300000 = 5 phút.
+   base: futures (khớp cron) = "https://fapi.binance.com/fapi/v1" ; spot = "https://data-api.binance.vision/api/v3" */
+const LIVE_SRC = { refreshMs: 60000, base: "https://fapi.binance.com/fapi/v1" };
 const TFS_FAST = ["15m", "1h", "4h", "1D"];   // Crypto, FX
 const TFS_SLOW = ["4h", "1D", "1W", "1M"];     // Stock Mỹ, Stock Việt
 const SPARK_K = [6, 12, 24, 48];   // theo vị trí khung trong tfs của từng thị trường
@@ -359,6 +362,22 @@ async function refresh() {
   const list = await Promise.all(MARKETS.map(loadMarket));
   MARKETS.forEach((m, i) => { DATA[m.id] = list[i]; });
   render();
+}
+
+/* --- giá trực tiếp (chỉ Crypto): Binance ticker 24h; lỗi mạng thì giữ giá cũ / giá trong JSON --- */
+const LIVE = {};
+async function refreshLive() {
+  const d = DATA.crypto;
+  if (document.hidden || !d || !Array.isArray(d.items)) return;
+  await Promise.all(d.items.map(async i => {
+    try {
+      const r = await fetch(LIVE_SRC.base + "/ticker/24hr?symbol=" + encodeURIComponent(i.symbol), { cache: "no-store" });
+      if (!r.ok) return;
+      const j = await r.json(), p = parseFloat(j.lastPrice), c = parseFloat(j.priceChangePercent);
+      if (isFinite(p)) LIVE[i.symbol] = { price: p, chg: isFinite(c) ? c : null, t: Date.now() };
+    } catch (e) { /* bỏ qua */ }
+  }));
+  if (mkt === "crypto") render();
 }
 
 /* --- logic xu hướng --- */
@@ -416,6 +435,10 @@ function render() {
     upd.className = stale ? "muted dn" : "muted";
     upd.textContent = (stale ? "⚠ Dữ liệu cũ: cập nhật " + ago(age) + " trước" : "Cập nhật " + new Date(t0).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }));
   }
+  if (mkt === "crypto") {
+    const ts = Object.values(LIVE).map(x => x.t);
+    if (ts.length) upd.textContent += (upd.textContent ? " · " : "") + "giá live " + new Date(Math.max(...ts)).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  }
   if (!items.length) return empty("File dữ liệu chưa có mã nào.");
 
   const cnt = { up: 0, dn: 0, sd: 0 };
@@ -435,9 +458,10 @@ function render() {
   $("tbl").innerHTML = `<thead><tr><th>Mã</th><th style="text-align:right">Giá${m.cur ? " (" + m.cur + ")" : ""}</th><th style="text-align:right">%</th>` +
     m.tfs.map(t => `<th class="${t === tf ? "sel" : ""}">${t}</th>`).join("") + `<th>Biểu đồ</th><th>Tín hiệu</th></tr></thead><tbody>` +
     items.map(i => {
-      const t = trendFor(i, tf), chg = Number(i.chg) || 0, c = chg >= 0 ? "up" : "dn";
+      const lv = mkt === "crypto" ? LIVE[i.symbol] : null;
+      const t = trendFor(i, tf), price = lv ? lv.price : Number(i.price), chg = lv && lv.chg !== null ? lv.chg : (Number(i.chg) || 0), c = chg >= 0 ? "up" : "dn";
       return `<tr><td class="sym"><b>${esc(i.symbol)}</b><span>${esc(i.name)}</span></td>
-        <td class="num">${fmt(Number(i.price), i.dec ?? 2)}</td>
+        <td class="num">${fmt(price, i.dec ?? 2)}</td>
         <td class="num ${c}">${chg >= 0 ? "▲" : "▼"} ${Math.abs(chg).toFixed(2)}%</td>` +
         m.tfs.map(x => { const tr = trendFor(i, x); return `<td class="${x === tf ? "sel" : ""}"><span class="b ${tr}">${LBL[tr].split(" ")[0]}</span></td>`; }).join("") +
         `<td class="${t}">${spark(i.spark, t)}</td><td>${esc(i.signal || "–")}</td></tr>`;
@@ -455,8 +479,10 @@ document.addEventListener("click", e => {
   if (b) { tf = b.dataset.tf; store.set("th_tf", tf); renderNav(); render(); if (typeof track === "function") track("hub_timeframe", { timeframe: tf }); }
 });
 
-renderNav(); refresh();
+renderNav(); refresh().then(refreshLive);
 setInterval(refresh, DATA_SOURCE.refreshMs);
+setInterval(refreshLive, LIVE_SRC.refreshMs);
+document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshLive(); });
 
 })();
 </script>
