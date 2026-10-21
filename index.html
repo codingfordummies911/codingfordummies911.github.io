@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trang giới thiệu</title>
 <meta name="description" content="Giới thiệu bot Telegram và các dự án mã nguồn mở.">
+
+<!-- Google tag (gtag.js): thay G-MD8C8L34V8 bằng Measurement ID của bạn (2 chỗ) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MD8C8L34V8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MD8C8L34V8');
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -105,7 +115,7 @@ footer{padding:36px 0 56px;color:var(--muted);font-size:.9rem;border-top:1px sol
       <p class="lead" id="tagline">Mình xây dựng công cụ tự động hóa và chia sẻ mã nguồn mở. Thử bot Telegram hoặc xem các dự án bên dưới.</p>
       <div class="btns">
         <a class="btn primary" id="botBtn" href="#" target="_blank" rel="noopener">Mở bot trên Telegram</a>
-        <a class="btn" href="#repos">Xem dự án</a>
+        <a class="btn" id="reposBtn" href="#repos">Xem dự án</a>
       </div>
     </div>
 
@@ -170,9 +180,9 @@ const CONFIG = {
   ],
 
   links: [
-    { label: "GitHub",  url: "https://github.com/username" },
-    { label: "Kênh Telegram", url: "https://t.me/ten_kenh" },
-    { label: "Email",   url: "mailto:ban@example.com" }
+    { label: "GitHub",  url: "https://codingfordummies911.github.io" },
+    { label: "Kênh Telegram", url: "https://t.me/bmttradingsignal" },
+    { label: "Email",   url: "mailto:codingfordummies911@gmail.com" }
   ]
 };
 /* ===== HẾT PHẦN CHỈNH SỬA ===== */
@@ -236,6 +246,22 @@ loadRepos();
     setTimeout(() => { s.hidden = false; next(); }, isBot ? 900 : 500);
   })();
 })();
+
+/* ===== Google Analytics: đếm sự kiện bấm ===== */
+const track = (name, params) => { if (typeof gtag === "function") gtag("event", name, params); };
+
+$("botBtn").addEventListener("click", () => track("open_telegram_bot"));
+$("reposBtn").addEventListener("click", () => track("click_view_projects"));
+
+/* repo và liên kết được render động -> bắt sự kiện ở phần tử cha */
+$("repoList").addEventListener("click", e => {
+  const a = e.target.closest("a.repo");
+  if (a) track("click_repo", { repo_name: a.querySelector("h3")?.textContent || "" });
+});
+$("links").addEventListener("click", e => {
+  const a = e.target.closest("a");
+  if (a) track("click_link", { link_label: a.textContent.trim() });
+});
 </script>
 </body>
 </html>
