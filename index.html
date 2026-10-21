@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trang giới thiệu</title>
-<meta name="description" content="Giới thiệu bot Telegram và các dự án mã nguồn mở.">
+<meta name="description" content="Giới thiệu bot Telegram, Trading Hub xu hướng thị trường và các dự án mã nguồn mở.">
 
-<!-- Google tag (gtag.js): thay G-MD8C8L34V8 bằng Measurement ID của bạn (2 chỗ) -->
+<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MD8C8L34V8"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -104,6 +104,44 @@ footer{padding:36px 0 56px;color:var(--muted);font-size:.9rem;border-top:1px sol
   .typing i{animation:none;opacity:.6}
   .btn:hover{transform:none}
 }
+
+/* ===== Trading Hub ===== */
+#hub{--up:#0f7a55;--upb:#d9f3e8;--dn:#b8322e;--dnb:#fde3e1;--sd:#7d6416;--sdb:#f8eccb}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) #hub{--up:#4fd69f;--upb:#12392f;--dn:#ff8a84;--dnb:#43201f;--sd:#e8c25a;--sdb:#3a3216}}
+:root[data-theme="dark"] #hub{--up:#4fd69f;--upb:#12392f;--dn:#ff8a84;--dnb:#43201f;--sd:#e8c25a;--sdb:#3a3216}
+#hub .tag{font-size:.75rem;padding:2px 10px;border-radius:999px;background:var(--sdb);color:var(--sd);font-weight:700;margin-left:8px;vertical-align:middle;letter-spacing:0}
+#hub .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 8px}
+#hub button{font:inherit;color:inherit;cursor:pointer}
+#hub .chip{padding:7px 16px;border:1px solid var(--line);background:var(--surface);border-radius:999px;font-weight:500}
+#hub .chip[aria-selected="true"],#hub .chip[aria-pressed="true"]{background:var(--tg);border-color:var(--tg);color:#fff;font-weight:700}
+#hub .muted{color:var(--muted);font-size:.85rem}
+#hub .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:14px 0}
+#hub .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+#hub .card h2{font-size:.82rem;font-weight:500;color:var(--muted);margin:0 0 6px;letter-spacing:0}
+#hub .big{font-size:1.6rem;font-weight:800;line-height:1.2}
+#hub .bar{height:8px;border-radius:99px;background:var(--dnb);overflow:hidden;margin:10px 0 4px}
+#hub .bar i{display:block;height:100%;background:var(--up)}
+#hub .up{color:var(--up)}#hub .dn{color:var(--dn)}#hub .sd{color:var(--sd)}
+#hub h3{font-size:1.05rem;margin:22px 0 10px}
+#hub .scroll{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+#hub table{border-collapse:collapse;width:100%;min-width:720px;font-size:.92rem}
+#hub th,#hub td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+#hub th{font-size:.78rem;font-weight:500;color:var(--muted)}
+#hub tr:last-child td{border-bottom:0}
+#hub td.num{text-align:right;font-variant-numeric:tabular-nums}
+#hub .sym b{display:block}#hub .sym span{font-size:.78rem;color:var(--muted)}
+#hub .b{display:inline-block;min-width:54px;text-align:center;padding:2px 8px;border-radius:8px;font-size:.8rem;font-weight:700}
+#hub .b.up{background:var(--upb)}#hub .b.dn{background:var(--dnb)}#hub .b.sd{background:var(--sdb)}
+#hub th.sel,#hub td.sel{background:color-mix(in srgb,var(--tg) 8%,transparent)}
+#hub svg.sp{width:84px;height:26px;display:block}
+#hub .feed{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:14px}
+#hub .feed li{display:flex;gap:12px;align-items:center;padding:11px 16px;border-bottom:1px solid var(--line);font-size:.92rem}
+#hub .feed li:last-child{border-bottom:0}
+#hub .feed time{color:var(--muted);font-variant-numeric:tabular-nums;font-size:.82rem;min-width:44px}
+#hub details{margin:22px 0 0;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 18px}
+#hub summary{cursor:pointer;font-weight:700}
+#hub pre{overflow-x:auto;font-size:.8rem;background:var(--bg);padding:12px;border-radius:10px}
+#hub .empty{padding:20px}
 </style>
 </head>
 <body>
@@ -116,6 +154,7 @@ footer{padding:36px 0 56px;color:var(--muted);font-size:.9rem;border-top:1px sol
       <div class="btns">
         <a class="btn primary" id="botBtn" href="#" target="_blank" rel="noopener">Mở bot trên Telegram</a>
         <a class="btn" id="reposBtn" href="#repos">Xem dự án</a>
+        <a class="btn" id="hubBtn" href="#hub">Trading Hub</a>
       </div>
     </div>
 
@@ -131,6 +170,29 @@ footer{padding:36px 0 56px;color:var(--muted);font-size:.9rem;border-top:1px sol
 </header>
 
 <main class="wrap">
+  <section id="hub">
+    <h2>Trading Hub <span class="tag">Dữ liệu mẫu</span></h2>
+    <p class="sub">Xu hướng Crypto, FX, Stock Mỹ và Stock Việt theo nhiều khung thời gian. <span id="upd"></span></p>
+    <div class="row tabs" role="tablist" aria-label="Thị trường" id="tabs"></div>
+    <div class="row" role="group" aria-label="Khung thời gian" id="tfs"></div>
+    <div class="cards" id="cards"></div>
+    <h3>Xu hướng đa khung</h3>
+    <div class="scroll"><table id="tbl"></table></div>
+    <h3>Tín hiệu mới nhất</h3>
+    <ul class="feed" id="feed"></ul>
+    <details>
+    <summary>Cách nối dữ liệu thật</summary>
+    <p class="muted">Đặt <code>DATA_SOURCE.mode = "json"</code> và <code>url</code> trỏ tới file JSON do cron job ghi ra (cùng domain hoặc có CORS). Xu hướng từng khung được tính từ <code>spark</code> nếu bạn không truyền <code>trend</code>.</p>
+<pre>{ "updated": "2026-10-21T08:15:00Z",
+  "markets": { "crypto": {
+    "items": [{ "symbol":"BTCUSDT", "name":"Bitcoin", "price":67000, "chg":1.2,
+                "spark":[...], "trend":{"15m":"up","1h":"up","4h":"side","1D":"dn"},
+                "signal":"FVG HTF Buy" }],
+    "signals": [{ "t":"15:30", "symbol":"BTCUSDT", "side":"buy", "text":"Pullback về FVG 15m", "tf":"15m" }] },
+  "fx":{}, "us":{}, "vn":{} } }</pre>
+  </details>
+  </section>
+
   <section id="bot">
     <h2>Bot Telegram</h2>
     <p class="sub" id="botDesc">Mô tả ngắn: bot làm gì, dành cho ai, dùng thế nào.</p>
@@ -252,6 +314,7 @@ const track = (name, params) => { if (typeof gtag === "function") gtag("event", 
 
 $("botBtn").addEventListener("click", () => track("open_telegram_bot"));
 $("reposBtn").addEventListener("click", () => track("click_view_projects"));
+$("hubBtn").addEventListener("click", () => track("click_trading_hub"));
 
 /* repo và liên kết được render động -> bắt sự kiện ở phần tử cha */
 $("repoList").addEventListener("click", e => {
@@ -262,6 +325,138 @@ $("links").addEventListener("click", e => {
   const a = e.target.closest("a");
   if (a) track("click_link", { link_label: a.textContent.trim() });
 });
+</script>
+<script>
+(function () {
+/* ===== CẤU HÌNH ===== */
+const DATA_SOURCE = { mode: "mock", url: "data.json", refreshMs: 60000 }; // mode: "mock" | "json"
+const TFS_FAST = ["15m", "1h", "4h", "1D"];   // Crypto, FX
+const TFS_SLOW = ["4h", "1D", "1W", "1M"];     // Stock Mỹ, Stock Việt
+const SPARK_K = [6, 12, 24, 48];   // theo vị trí khung trong tfs của từng thị trường   // số điểm so sánh để suy ra xu hướng
+const SIDE_PCT = 0.4;                                          // |lệch so với trung bình| < ngưỡng % = đi ngang
+const MARKETS = [
+  { id: "crypto", label: "Crypto", tfs: TFS_FAST, locale: "en-US", cur: "USD", items: [
+    ["BTCUSDT", "Bitcoin", 67000, 2], ["ETHUSDT", "Ethereum", 3400, 2], ["SOLUSDT", "Solana", 160, 2], ["BNBUSDT", "BNB", 600, 2], ["XRPUSDT", "XRP", 0.55, 4]] },
+  { id: "fx", label: "FX", tfs: TFS_FAST, locale: "en-US", cur: "", items: [
+    ["EURUSD", "Euro / Đô la Mỹ", 1.082, 4], ["GBPUSD", "Bảng Anh / USD", 1.271, 4], ["USDJPY", "USD / Yên Nhật", 150.2, 2], ["XAUUSD", "Vàng", 2350, 2], ["AUDUSD", "AUD / USD", 0.662, 4]] },
+  { id: "us", label: "Stock Mỹ", tfs: TFS_SLOW, locale: "en-US", cur: "USD", items: [
+    ["SPY", "S&P 500 ETF", 520, 2], ["AAPL", "Apple", 190, 2], ["MSFT", "Microsoft", 420, 2], ["NVDA", "Nvidia", 900, 2], ["TSLA", "Tesla", 180, 2]] },
+  { id: "vn", label: "Stock Việt", tfs: TFS_SLOW, locale: "vi-VN", cur: "VND", items: [
+    ["VNINDEX", "VN-Index", 1280, 2], ["VCB", "Vietcombank", 92000, 0], ["FPT", "FPT", 130000, 0], ["HPG", "Hòa Phát", 28000, 0], ["VIC", "Vingroup", 45000, 0]] }
+];
+const SIGNAL_TEXT = ["FVG HTF Buy · Ultra Vol", "Pullback về FVG 15m", "Trap Sell → Buy", "FVG HTF Sell · Trap", "Ultra Vol Sell tại FVG"];
+/* ===== HẾT CẤU HÌNH ===== */
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} } };
+const LBL = { up: "↑ Tăng", dn: "↓ Giảm", sd: "→ Đi ngang" };
+
+/* --- dữ liệu mẫu (ổn định theo mã, không đổi khi chuyển tab) --- */
+function rng(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const hash = s => [...s].reduce((h, c) => Math.imul(h ^ c.charCodeAt(0), 16777619), 2166136261);
+function mockData() {
+  const markets = {};
+  MARKETS.forEach(m => {
+    const items = m.items.map(([symbol, name, base, dec]) => {
+      const r = rng(hash(symbol)), drift = (r() - 0.5) * 0.012, vol = 0.012;
+      let p = base, spark = [];
+      for (let i = 0; i < 60; i++) { p *= 1 + drift + (r() - 0.5) * vol; spark.push(p); }
+      const chg = (spark[59] / spark[58] - 1) * 100 * 3;
+      return { symbol, name, dec, price: spark[59], chg, spark, signal: r() > 0.45 ? SIGNAL_TEXT[Math.floor(r() * SIGNAL_TEXT.length)] : "" };
+    });
+    const r = rng(hash(m.id));
+    const signals = items.filter(i => i.signal).slice(0, 4).map((i, k) => ({
+      t: String(15 - k).padStart(2, "0") + ":" + String(Math.floor(r() * 4) * 15).padStart(2, "0"),
+      symbol: i.symbol, side: /Sell/.test(i.signal) ? "sell" : "buy", text: i.signal, tf: m.tfs[Math.floor(r() * 4)] }));
+    markets[m.id] = { items, signals };
+  });
+  return { updated: new Date().toISOString(), markets };
+}
+async function getData() {
+  if (DATA_SOURCE.mode === "json") {
+    try { const res = await fetch(DATA_SOURCE.url + "?t=" + Date.now()); if (!res.ok) throw new Error(res.status); return await res.json(); }
+    catch (e) { console.warn("Không tải được dữ liệu, dùng dữ liệu mẫu", e); }
+  }
+  return mockData();
+}
+
+/* --- logic xu hướng --- */
+function trendOf(spark, k) {
+  if (!spark || spark.length < 3) return "sd";
+  const w = spark.slice(-k), avg = w.reduce((a, b) => a + b, 0) / w.length;
+  const d = (spark[spark.length - 1] / avg - 1) * 100;
+  return d > SIDE_PCT ? "up" : d < -SIDE_PCT ? "dn" : "sd";
+}
+const norm = t => ({ up: "up", dn: "dn", down: "dn", sd: "sd", side: "sd" }[t] || "sd");
+const curTfs = () => MARKETS.find(x => x.id === mkt).tfs;
+const trendFor = (it, tf) => it.trend && it.trend[tf] ? norm(it.trend[tf]) : trendOf(it.spark, SPARK_K[Math.max(0, curTfs().indexOf(tf))]);
+
+function spark(values, cls) {
+  if (!values || values.length < 2) return "";
+  const mn = Math.min(...values), mx = Math.max(...values), rg = mx - mn || 1;
+  const pts = values.map((v, i) => (i / (values.length - 1) * 84).toFixed(1) + "," + (24 - (v - mn) / rg * 22).toFixed(1)).join(" ");
+  return `<svg class="sp ${cls}" viewBox="0 0 84 26" aria-hidden="true"><polyline fill="none" stroke="currentColor" stroke-width="1.8" points="${pts}"/></svg>`;
+}
+
+/* --- hiển thị --- */
+let DATA = null, mkt = store.get("th_m") || "crypto", tf = store.get("th_tf") || "4h";
+if (location.hash && MARKETS.some(m => m.id === location.hash.slice(1))) mkt = location.hash.slice(1);
+if (!MARKETS.some(m => m.id === mkt)) mkt = "crypto";
+function ensureTf() { const t = curTfs(); if (!t.includes(tf)) tf = t.includes("1D") ? "1D" : t[0]; }
+ensureTf();
+
+function renderNav() {
+  $("tabs").innerHTML = MARKETS.map(m => `<button class="chip" role="tab" data-m="${m.id}" aria-selected="${m.id === mkt}">${esc(m.label)}</button>`).join("");
+  $("tfs").innerHTML = '<span class="muted">Khung:</span>' + curTfs().map(t => `<button class="chip" data-tf="${t}" aria-pressed="${t === tf}">${t}</button>`).join("");
+}
+function render() {
+  const m = MARKETS.find(x => x.id === mkt), d = (DATA && DATA.markets && DATA.markets[mkt]) || {};
+  const items = d.items || [], sigs = d.signals || [];
+  $("upd").textContent = DATA && DATA.updated ? "Cập nhật " + new Date(DATA.updated).toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }) : "";
+  if (!items.length) { $("cards").innerHTML = ""; $("tbl").innerHTML = '<tr><td class="empty">Chưa có dữ liệu cho thị trường này.</td></tr>'; $("feed").innerHTML = ""; return; }
+
+  const cnt = { up: 0, dn: 0, sd: 0 };
+  items.forEach(i => cnt[trendFor(i, tf)]++);
+  const overall = cnt.up > cnt.dn && cnt.up >= cnt.sd ? "up" : cnt.dn > cnt.up && cnt.dn >= cnt.sd ? "dn" : "sd";
+  const pct = Math.round(cnt.up / items.length * 100);
+  const buys = sigs.filter(s => s.side === "buy").length;
+  $("cards").innerHTML = `
+    <div class="card"><h2>Xu hướng chung · ${esc(m.label)} · ${tf}</h2><div class="big ${overall}">${LBL[overall]}</div>
+      <div class="muted">${cnt.up} tăng · ${cnt.dn} giảm · ${cnt.sd} đi ngang</div></div>
+    <div class="card"><h2>Độ rộng thị trường</h2><div class="big">${pct}% mã đang tăng</div>
+      <div class="bar" role="img" aria-label="${pct}% mã tăng"><i style="width:${pct}%"></i></div><div class="muted">Khung ${tf}</div></div>
+    <div class="card"><h2>Tín hiệu gần đây</h2><div class="big"><span class="up">${buys} Buy</span> · <span class="dn">${sigs.length - buys} Sell</span></div>
+      <div class="muted">${sigs.length} tín hiệu trong danh sách</div></div>`;
+
+  const fmt = (v, dec) => new Intl.NumberFormat(m.locale, { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(v);
+  $("tbl").innerHTML = `<thead><tr><th>Mã</th><th style="text-align:right">Giá${m.cur ? " (" + m.cur + ")" : ""}</th><th style="text-align:right">%</th>` +
+    m.tfs.map(t => `<th class="${t === tf ? "sel" : ""}">${t}</th>`).join("") + `<th>Biểu đồ</th><th>Tín hiệu</th></tr></thead><tbody>` +
+    items.map(i => {
+      const t = trendFor(i, tf), c = i.chg >= 0 ? "up" : "dn";
+      return `<tr><td class="sym"><b>${esc(i.symbol)}</b><span>${esc(i.name)}</span></td>
+        <td class="num">${fmt(i.price, i.dec ?? 2)}</td>
+        <td class="num ${c}">${i.chg >= 0 ? "▲" : "▼"} ${Math.abs(i.chg).toFixed(2)}%</td>` +
+        m.tfs.map(x => { const tr = trendFor(i, x); return `<td class="${x === tf ? "sel" : ""}"><span class="b ${tr}">${LBL[tr].split(" ")[0]}</span></td>`; }).join("") +
+        `<td class="${t}">${spark(i.spark, t)}</td><td>${esc(i.signal || "–")}</td></tr>`;
+    }).join("") + "</tbody>";
+
+  $("feed").innerHTML = sigs.length ? sigs.map(s => `<li><time>${esc(s.t)}</time>
+    <span class="b ${s.side === "buy" ? "up" : "dn"}">${s.side === "buy" ? "▲ Buy" : "▼ Sell"}</span>
+    <b>${esc(s.symbol)}</b><span>${esc(s.text)}</span><span class="muted">${esc(s.tf || "")}</span></li>`).join("")
+    : '<li class="empty">Chưa có tín hiệu.</li>';
+}
+
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-m]"), b = e.target.closest("[data-tf]");
+  if (a) { mkt = a.dataset.m; store.set("th_m", mkt); ensureTf(); renderNav(); render(); if (typeof track === "function") track("hub_market", { market: mkt }); }
+  if (b) { tf = b.dataset.tf; store.set("th_tf", tf); renderNav(); render(); if (typeof track === "function") track("hub_timeframe", { timeframe: tf }); }
+});
+
+async function refresh() { DATA = await getData(); render(); }
+renderNav(); refresh();
+if (DATA_SOURCE.mode === "json") setInterval(refresh, DATA_SOURCE.refreshMs);
+})();
 </script>
 </body>
 </html>
